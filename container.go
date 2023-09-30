@@ -8,6 +8,7 @@ import (
 
 type Container interface {
 	addConfiguration(typ reflect.Type, config configuration.Configuration)
+	getConfiguration(typ reflect.Type) configuration.Configuration
 }
 
 type container struct {
@@ -29,8 +30,22 @@ func GetContainer() Container {
 }
 
 func (c container) addConfiguration(typ reflect.Type, config configuration.Configuration) {
-	key := typ.PkgPath() + "/" + typ.Name()
+	key := c.generateKey(typ)
 	c.configurations[key] = config
+}
+
+func (c container) getConfiguration(typ reflect.Type) configuration.Configuration {
+	key := c.generateKey(typ)
+	config, ok := c.configurations[key]
+	if ok {
+		return config
+	}
+
+	panic(newResolveError(fmt.Sprintf("Could not resolve %s. Not found.", typ.Name())))
+}
+
+func (c container) generateKey(typ reflect.Type) string {
+	return typ.PkgPath() + "/" + typ.Name()
 }
 
 func Register[I any, S any]() Registrar[I, S] {
@@ -51,4 +66,12 @@ func Register[I any, S any]() Registrar[I, S] {
 	}
 
 	return newRegistrar[I, S](GetContainer(), it, st)
+}
+
+func Resolve[I any]() I {
+	var i [0]I
+	var interfaceType = reflect.TypeOf(i).Elem()
+
+	GetContainer().getConfiguration(interfaceType)
+	panic("Not implemented.")
 }

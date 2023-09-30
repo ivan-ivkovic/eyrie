@@ -7,17 +7,12 @@ type TransientConfiguration struct {
 	implementingType reflect.Type
 }
 
-func NewTransientConfiguration(interfaceType reflect.Type, implementingType reflect.Type) TransientConfiguration {
+func NewTransientConfiguration(implementingType reflect.Type) TransientConfiguration {
 	return TransientConfiguration{
-		interfaceType:    interfaceType,
 		implementingType: implementingType,
 	}
 }
 
-func (tc TransientConfiguration) GetInterfaceType() reflect.Type {
-	return tc.interfaceType
-}
-
-func (tc TransientConfiguration) GetLifestyle() Lifestyle {
-	return Transient
+func (tc TransientConfiguration) GetOrCreateInstance() any {
+	panic("Not implemented.")
 }

@@ -25,11 +25,11 @@ func newRegistrar[I any, S any](c Container, interfaceType reflect.Type, impleme
 }
 
 func (r registrar[I, S]) AsSingleton() {
-	config := configuration.NewSingletonConfiguration(r.interfaceType, r.implementingType)
+	config := configuration.NewSingletonConfiguration(r.implementingType)
 	r.container.addConfiguration(r.interfaceType, config)
 }
 
 func (r registrar[I, S]) AsTransient() {
-	config := configuration.NewTransientConfiguration(r.interfaceType, r.implementingType)
+	config := configuration.NewTransientConfiguration(r.implementingType)
 	r.container.addConfiguration(r.interfaceType, config)
 }
