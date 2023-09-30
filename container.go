@@ -48,7 +48,7 @@ func (c container) generateKey(typ reflect.Type) string {
 	return typ.PkgPath() + "/" + typ.Name()
 }
 
-func Register[I any, S any]() Registrar[I, S] {
+func Register[I any, S any](constructor func() S) Registrar[I, S] {
 	var i [0]I
 	var s [0]S
 	var it = reflect.TypeOf(i).Elem()
@@ -65,7 +65,7 @@ func Register[I any, S any]() Registrar[I, S] {
 		panic(newRegistrationError(msg))
 	}
 
-	return newRegistrar[I, S](GetContainer(), it, st)
+	return newRegistrar[I, S](GetContainer(), constructor, it, st)
 }
 
 func Resolve[I any]() I {

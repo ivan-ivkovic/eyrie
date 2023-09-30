@@ -2,17 +2,16 @@ package configuration
 
 import "reflect"
 
-type TransientConfiguration struct {
-	interfaceType    reflect.Type
+type TransientConfiguration[T any] struct {
 	implementingType reflect.Type
 }
 
-func NewTransientConfiguration(implementingType reflect.Type) TransientConfiguration {
-	return TransientConfiguration{
+func NewTransientConfiguration[T any](implementingType reflect.Type, constructor func() T) TransientConfiguration[T] {
+	return TransientConfiguration[T]{
 		implementingType: implementingType,
 	}
 }
 
-func (tc TransientConfiguration) GetOrCreateInstance() any {
+func (tc TransientConfiguration[T]) GetOrCreateInstance() any {
 	panic("Not implemented.")
 }
