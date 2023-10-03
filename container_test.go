@@ -10,6 +10,9 @@ func Test_Container(t *testing.T) {
 	falconsnest.Register[testdata.ICar, testdata.Car](testdata.NewCar).AsTransient()
 	falconsnest.Register[testdata.IEngine, testdata.Engine](testdata.NewEngine).AsTransient()
 	falconsnest.Register[testdata.IExhaust, testdata.Exhaust](testdata.NewExhaust).AsTransient()
+	falconsnest.Resolve[testdata.IExhaust]()
+	falconsnest.Resolve[testdata.IEngine]()
+	falconsnest.Resolve[testdata.ICar]()
 }
 
 func Test_CannotRegisterInterfaceToAStruct(t *testing.T) {

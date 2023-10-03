@@ -72,6 +72,7 @@ func Resolve[I any]() I {
 	var i [0]I
 	var interfaceType = reflect.TypeOf(i).Elem()
 
-	GetContainer().getConfiguration(interfaceType)
-	panic("Not implemented.")
+	config := GetContainer().getConfiguration(interfaceType)
+	instance := config.GetOrCreateInstance()
+	return instance.(I)
 }
