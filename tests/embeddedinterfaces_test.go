@@ -1,7 +1,7 @@
 package tests
 
 type EmbeddedInterface1 interface {
-	Method1()
+	IncreaseCounter()
 }
 
 type FinalInterface1 interface {
