@@ -20,7 +20,7 @@ type container struct {
 
 var c container
 
-func GetContainer() Container {
+func getContainer() Container {
 	if !c.initialized {
 		c = container{
 			configurations: make(map[string]configuration.Configuration),

@@ -22,19 +22,19 @@ func Register[I any, S any](constructor func() S) Registrar[I, S] {
 		panic(newRegistrationError(msg))
 	}
 
-	return newRegistrar[I, S](GetContainer(), constructor, it, st)
+	return newRegistrar[I, S](getContainer(), constructor, it, st)
 }
 
 func Resolve[I any]() I {
 	var i [0]I
 	var interfaceType = reflect.TypeOf(i).Elem()
 
-	config := GetContainer().getConfiguration(interfaceType)
+	config := getContainer().getConfiguration(interfaceType)
 	instance := config.GetOrCreateInstance()
 	return instance.(I)
 }
 
 func Seal() {
-	c := GetContainer()
+	c := getContainer()
 	c.seal()
 }
