@@ -27,6 +27,17 @@ func Test_ContainerSuccessfullyInstantiatesOnlyOneSingletonInstance(t *testing.T
 	}
 }
 
+func Test_ContainerSuccessfullyRegistersAndResolvesTypesWithPointerReceivers(t *testing.T) {
+	container.Register[IPointerInterface, *PointerStruct](NewPointerStruct).AsSingleton()
+
+	result := container.Resolve[IPointerInterface]()
+
+	_, ok := result.(*PointerStruct)
+	if !ok {
+		t.Fatalf("Resolve did not return an object of the expected type.")
+	}
+}
+
 func Test_ContainerSuccessfullyRegistersAndResolvesExportedTypesAndConstructors(t *testing.T) {
 	container.Register[IInterface, Struct](NewStruct).AsTransient()
 
@@ -54,6 +65,13 @@ func Test_CannotRegisterInterfaceToAStruct(t *testing.T) {
 
 	defer catchPanic(t, expectedErrorMessage)
 	container.Register[Struct, IInterface](NewIInterface)
+}
+
+func Test_CannotRegisterPointerToAStruct(t *testing.T) {
+	var expectedErrorMessage = "Interface and struct expected as type parameters."
+
+	defer catchPanic(t, expectedErrorMessage)
+	container.Register[PointerStruct, Struct](NewStruct)
 }
 
 func Test_CannotRegisterIfStructDoesNotImplementInterface(t *testing.T) {
