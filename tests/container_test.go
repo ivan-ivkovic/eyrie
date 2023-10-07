@@ -71,6 +71,18 @@ func Test_ContainerSuccessfullyRegistersAndResolvesInterfacesAndEmbeddedStructs(
 	}
 }
 
+func Test_ContainerSuccessfullyResolvesComplexDependencies(t *testing.T) {
+	container.Register[ICar, *Car](NewCar).AsTransient()
+	container.Register[IExhaust, *Exhaust](NewExhaust).AsTransient()
+	container.Register[IEngine, *Engine](NewEngine).AsTransient()
+
+	car := container.Resolve[ICar]()
+
+	if car.GetExhaustType() != "DUAL" || car.GetEngineMileage() != 156896.226 {
+		t.Fatalf("Container did not properly resolve sub-dependencies.")
+	}
+}
+
 func Test_CannotRegisterInterfaceToAStruct(t *testing.T) {
 	var expectedErrorMessage = "RegistrationError: Interface and struct expected as type parameters."
 
