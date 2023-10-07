@@ -73,6 +73,6 @@ func Resolve[I any]() I {
 	var interfaceType = reflect.TypeOf(i).Elem()
 
 	config := GetContainer().getConfiguration(interfaceType)
-	instance := (config).GetOrCreateInstance()
+	instance := config.GetOrCreateInstance()
 	return instance.(I)
 }
