@@ -4,6 +4,10 @@ type IInterface interface {
 	Method1()
 }
 
+func NewIInterface() IInterface {
+	return Struct{}
+}
+
 type Struct struct {
 	memoryAddress *int
 }

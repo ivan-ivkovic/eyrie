@@ -53,14 +53,14 @@ func Test_CannotRegisterInterfaceToAStruct(t *testing.T) {
 	var expectedErrorMessage = "Interface and struct expected as type parameters."
 
 	defer catchPanic(t, expectedErrorMessage)
-	container.Register[Car, ICar](NewICar)
+	container.Register[Struct, IInterface](NewIInterface)
 }
 
 func Test_CannotRegisterIfStructDoesNotImplementInterface(t *testing.T) {
 	var expectedErrorMessage = "Exhaust does not implement ICar."
 
 	defer catchPanic(t, expectedErrorMessage)
-	container.Register[ICar, Exhaust](NewExhaust)
+	container.Register[IInterface, Struct](NewStruct)
 }
 
 func Test_CannotRegisterInterfaceWhichImplementsEmbeddedInterface1(t *testing.T) {
