@@ -5,13 +5,24 @@ import (
 	"testing"
 )
 
+func Test_ContainerSuccessfullyInstantiatesTwoTransientInstances(t *testing.T) {
+	container.Register[IInterface, Struct](NewStruct).AsTransient()
+
+	result1 := container.Resolve[IInterface]()
+	result2 := container.Resolve[IInterface]()
+
+	if result1.(Struct).memoryAddress == result2.(Struct).memoryAddress {
+		t.Fatalf("Singleton configuration produced two different objects.")
+	}
+}
+
 func Test_ContainerSuccessfullyInstantiatesOnlyOneSingletonInstance(t *testing.T) {
 	container.Register[IInterface, Struct](NewStruct).AsSingleton()
 
-	var result1 IInterface = container.Resolve[IInterface]()
-	var result2 IInterface = container.Resolve[IInterface]()
+	result1 := container.Resolve[IInterface]()
+	result2 := container.Resolve[IInterface]()
 
-	if result1.(Struct).object != result2.(Struct).object {
+	if result1.(Struct).memoryAddress != result2.(Struct).memoryAddress {
 		t.Fatalf("Singleton configuration produced two different objects.")
 	}
 }

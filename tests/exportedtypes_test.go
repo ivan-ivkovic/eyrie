@@ -3,11 +3,11 @@ package tests
 type IInterface interface{}
 
 type Struct struct {
-	object *int
+	memoryAddress *int
 }
 
 func NewStruct() Struct {
 	return Struct{
-		object: new(int),
+		memoryAddress: new(int),
 	}
 }
