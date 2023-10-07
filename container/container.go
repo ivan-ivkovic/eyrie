@@ -18,17 +18,17 @@ type container struct {
 	isSealed       bool
 }
 
-var c container
+var c *container
 
 func getContainer() Container {
-	if !c.initialized {
-		c = container{
+	if c == nil {
+		c = &container{
 			configurations: make(map[string]configuration.Configuration),
 			initialized:    true,
 		}
 	}
 
-	return &c
+	return c
 }
 
 func (c *container) addConfiguration(typ reflect.Type, config configuration.Configuration) {
