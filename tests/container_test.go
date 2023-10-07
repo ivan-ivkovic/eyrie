@@ -12,7 +12,7 @@ func Test_ContainerSuccessfullyInstantiatesTwoTransientInstances(t *testing.T) {
 	result2 := container.Resolve[IInterface]()
 
 	if result1.(Struct).memoryAddress == result2.(Struct).memoryAddress {
-		t.Fatalf("Singleton configuration produced two different objects.")
+		t.Fatalf("Transient configuration produced only one object.")
 	}
 }
 
